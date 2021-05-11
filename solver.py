@@ -1,9 +1,13 @@
 # Mohammad Sheva Almeyda Sofjan | 13519018
-# Deterministic 2048 Solver with Algo
+# Deterministic 2048 Solver with Backtracking Algo
 # https://github.com/moshval/2k28solver
+# Game design inspired by https://www.youtube.com/watch?v=b4XP2IcI-Bg
 
-MAX_TILE = 16
-SQUARE = 2
+
+from time import time 
+
+MAX_TILE = 8
+SQUARE = 4
 ADDED = 2
 def initGame():
     tile = [[0 for i in range(SQUARE)] for j in range(SQUARE)]
@@ -249,12 +253,14 @@ def simulate():
     moves = []
     print("State Awal : ")
     printGame(tile)
+    print("Goal : " + str(MAX_TILE))
+    inittime = time()
     solve(tile, 0,moves)
     # search(tile)
-    return result,counter
+    return result,counter,inittime
 
 
-def solve(tile, count,moves):
+def solve(tile, count, moves):
     if(state(tile) == "W"):
         result.append(tile)
         counter.append(count)
@@ -321,7 +327,11 @@ if __name__ == '__main__':
     # tile = move(tile,'s')
     # printGame(tile)
 
-    r,c = simulate()
+    r,c,inittime = simulate()
+    print("Time req : " + str(time() - inittime) + " s")
+    print("Banyak Konfigurasi State Akhir : " + str(len(c)))
+    print("Minimum Move : " + str(min(c)))
+    print("Maximum Move : " + str(max(c)))    
     for i in range(len(r)):
         print("Solusi " + str(i+1) + " , Banyak move = "+str(c[i]))
         print("Moves : ",end ="")
@@ -329,7 +339,6 @@ if __name__ == '__main__':
         print("Hasil Akhir : ")
         printGame(r[i])
         print()
-    print("Minimum Move : " + str(min(c)))
     # r = simulate()
     # print(r)
     # print(len(r))
